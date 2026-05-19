@@ -96,7 +96,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - `app/layout.tsx`-ში საბაზო shell
 
 #### T1.3: Hono backend-ის სკაფფოლდინგი
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Low
 - **Dependencies**: T1.1
 - **Description**:
