@@ -289,7 +289,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - Toast notifications (sonner)
 
 #### T3.4: Reviews API endpoints (Hono)
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Medium
 - **Dependencies**: T1.3, T3.2
 - **Description**:

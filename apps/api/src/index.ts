@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { placesRoute } from './routes/places.js';
+import { placeReviewsRoute, reviewsRoute } from './routes/reviews.js';
 
 const app = new Hono();
 
@@ -29,6 +30,8 @@ app.get('/health', (c) =>
 );
 
 app.route('/api/places', placesRoute);
+app.route('/api/places', placeReviewsRoute);
+app.route('/api/reviews', reviewsRoute);
 
 const port = Number.parseInt(process.env.PORT ?? '3001', 10);
 
