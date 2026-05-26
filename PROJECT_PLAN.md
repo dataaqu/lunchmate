@@ -279,7 +279,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - Drizzle migration-ის გენერაცია და გაშვება
 
 #### T3.3: Login / Register UI
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Medium
 - **Dependencies**: T3.1
 - **Description**:

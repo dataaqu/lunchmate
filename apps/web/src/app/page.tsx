@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { MapPin } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -18,8 +19,8 @@ export default function Home() {
               თბილისის კვების გიდი
             </span>
           </div>
-          <Button variant="outline" size="sm" disabled>
-            შესვლა
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/login">შესვლა</Link>
           </Button>
         </div>
       </header>
