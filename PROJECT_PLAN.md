@@ -106,7 +106,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - `tsx watch` dev server-ი
 
 #### T1.4: Google Cloud Console — Project + API Keys
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Low
 - **Dependencies**: None
 - **Description**:

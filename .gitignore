@@ -43,3 +43,8 @@ coverage/
 
 # Drizzle
 drizzle/.snapshot.json
+
+# PlanFlow local state (only project.json is tracked)
+.planflow/worktrees.json
+.planflow/index-state.json
+.planflow/agents/
