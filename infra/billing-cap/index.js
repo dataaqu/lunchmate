@@ -12,3 +12,14 @@ export function shouldDisableBilling({ costAmount, budgetAmount } = {}) {
     costAmount >= budgetAmount
   );
 }
+
+/**
+ * Decode the base64 Pub/Sub payload published by a Cloud Billing budget.
+ */
+export function parseBudgetMessage(cloudEvent) {
+  const encoded = cloudEvent?.data?.message?.data;
+  if (!encoded) {
+    throw new Error('Pub/Sub message contained no data');
+  }
+  return JSON.parse(Buffer.from(encoded, 'base64').toString('utf8'));
+}
