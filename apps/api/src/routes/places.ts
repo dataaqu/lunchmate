@@ -4,6 +4,7 @@ import { getDistrict } from '../lib/districts.js';
 import { placesCache } from '../lib/places-cache.js';
 
 const PLACES_API_URL = 'https://places.googleapis.com/v1/places:searchNearby';
+const PLACES_DETAIL_BASE = 'https://places.googleapis.com/v1/places';
 
 const FIELD_MASK = [
   'places.id',
@@ -19,6 +20,46 @@ const FIELD_MASK = [
   'places.internationalPhoneNumber',
   'places.websiteUri',
 ].join(',');
+
+const DETAIL_FIELD_MASK = [
+  'id',
+  'displayName',
+  'formattedAddress',
+  'location',
+  'rating',
+  'userRatingCount',
+  'priceLevel',
+  'primaryType',
+  'photos',
+  'regularOpeningHours',
+  'internationalPhoneNumber',
+  'websiteUri',
+].join(',');
+
+const MAX_PHOTOS = 5;
+
+interface RawPhoto {
+  name: string;
+  widthPx?: number;
+  heightPx?: number;
+}
+
+interface RawPlaceDetail {
+  id: string;
+  displayName?: { text: string; languageCode?: string };
+  formattedAddress?: string;
+  rating?: number;
+  userRatingCount?: number;
+  priceLevel?: string;
+  primaryType?: string;
+  regularOpeningHours?: {
+    openNow?: boolean;
+    weekdayDescriptions?: string[];
+  };
+  internationalPhoneNumber?: string;
+  websiteUri?: string;
+  photos?: RawPhoto[];
+}
 
 interface NearbySearchRequest {
   locationRestriction: {
@@ -97,4 +138,73 @@ placesRoute.get('/', async (c) => {
   placesCache.set(cacheKey, places);
 
   return c.json({ places, cached: false });
+});
+
+placesRoute.get('/:placeId', async (c) => {
+  const apiKey = process.env['GOOGLE_PLACES_API_KEY'];
+  if (!apiKey) {
+    return c.json({ error: 'Server misconfiguration: missing Places API key' }, 500);
+  }
+
+  const placeId = c.req.param('placeId');
+  const cacheKey = `place-detail:${placeId}`;
+  const cached = placesCache.get<unknown>(cacheKey);
+  if (cached) {
+    return c.json({ place: cached, cached: true });
+  }
+
+  const res = await fetch(`${PLACES_DETAIL_BASE}/${placeId}?languageCode=ka`, {
+    headers: {
+      'X-Goog-Api-Key': apiKey,
+      'X-Goog-FieldMask': DETAIL_FIELD_MASK,
+    },
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error(`[place-detail] Google API error ${res.status}: ${errorText}`);
+    if (res.status === 404) {
+      return c.json({ error: 'Place not found' }, 404);
+    }
+    return c.json({ error: 'Upstream error from Google Places API' }, 502);
+  }
+
+  const raw = (await res.json()) as RawPlaceDetail;
+
+  const photoRefs = (raw.photos ?? []).slice(0, MAX_PHOTOS);
+  const photos = (
+    await Promise.all(
+      photoRefs.map(async (photo) => {
+        try {
+          const mediaRes = await fetch(
+            `https://places.googleapis.com/v1/${photo.name}/media?maxWidthPx=800&skipHttpRedirect=true`,
+            { headers: { 'X-Goog-Api-Key': apiKey } },
+          );
+          if (!mediaRes.ok) return null;
+          const mediaData = (await mediaRes.json()) as { photoUri?: string };
+          return mediaData.photoUri ?? null;
+        } catch {
+          return null;
+        }
+      }),
+    )
+  ).filter((uri): uri is string => uri !== null);
+
+  const place = {
+    id: raw.id,
+    displayName: raw.displayName,
+    formattedAddress: raw.formattedAddress,
+    rating: raw.rating,
+    userRatingCount: raw.userRatingCount,
+    priceLevel: raw.priceLevel,
+    primaryType: raw.primaryType,
+    regularOpeningHours: raw.regularOpeningHours,
+    internationalPhoneNumber: raw.internationalPhoneNumber,
+    websiteUri: raw.websiteUri,
+    photos,
+  };
+
+  placesCache.set(cacheKey, place);
+
+  return c.json({ place, cached: false });
 });
