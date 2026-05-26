@@ -1,6 +1,8 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { PlaceMarkers } from "./place-markers";
 
 const TBILISI: google.maps.LatLngLiteral = { lat: 41.7151, lng: 44.8271 };
 
@@ -69,8 +71,18 @@ const MAP_STYLES: google.maps.MapTypeStyle[] = [
   },
 ];
 
+type Category = "restaurant" | "cafe" | "fast_food";
+const VALID_CATEGORIES = new Set<string>(["restaurant", "cafe", "fast_food"]);
+
 export function GoogleMapComponent() {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
+  const mapId =
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID ?? "DEMO_MAP_ID";
+  const searchParams = useSearchParams();
+  const raw = searchParams.get("category");
+  const category = VALID_CATEGORIES.has(raw ?? "")
+    ? (raw as Category)
+    : null;
 
   return (
     <APIProvider apiKey={apiKey}>
@@ -82,8 +94,10 @@ export function GoogleMapComponent() {
         gestureHandling="greedy"
         disableDefaultUI={false}
         styles={MAP_STYLES}
+        mapId={mapId}
         style={{ width: "100%", height: "100%" }}
       />
+      {category && <PlaceMarkers category={category} />}
     </APIProvider>
   );
 }
