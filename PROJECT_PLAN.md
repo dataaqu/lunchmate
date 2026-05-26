@@ -145,7 +145,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - GitHub Actions-ი ან Vercel/Railway-ის built-in CI
 
 #### T1.8: ENV variable strategy + secrets
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Low
 - **Dependencies**: T1.7
 - **Description**:
