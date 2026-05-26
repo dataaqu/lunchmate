@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { MapPin } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { CategoryFilter } from "@/components/category-filter";
 import { GoogleMapComponent } from "@/components/map-loader";
 
 export default function Home() {
@@ -20,8 +22,13 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-1 min-h-0">
+      <main className="relative flex-1 min-h-0">
         <GoogleMapComponent />
+        <div className="absolute top-4 left-1/2 z-10 -translate-x-1/2">
+          <Suspense>
+            <CategoryFilter />
+          </Suspense>
+        </div>
       </main>
     </div>
   );
