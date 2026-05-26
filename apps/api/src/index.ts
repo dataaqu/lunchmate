@@ -2,6 +2,7 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
+import { placesRoute } from './routes/places.js';
 
 const app = new Hono();
 
@@ -26,6 +27,8 @@ app.get('/health', (c) =>
     timestamp: new Date().toISOString(),
   }),
 );
+
+app.route('/api/places', placesRoute);
 
 const port = Number.parseInt(process.env.PORT ?? '3001', 10);
 
