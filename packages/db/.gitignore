@@ -1,0 +1,15 @@
+# dependencies
+/node_modules
+
+# build
+*.tsbuildinfo
+
+# env files
+.env*
+!.env.example
+
+# drizzle migrations output
+/drizzle
+
+# misc
+.DS_Store
