@@ -35,6 +35,9 @@ export async function capBillingHandler(
   cloudEvent,
   { client, projectId = PROJECT_ID } = {},
 ) {
+  if (!projectId) {
+    throw new Error('projectId is required — set GCP_PROJECT or GOOGLE_CLOUD_PROJECT');
+  }
   const billing = client ?? new CloudBillingClient();
   const budget = parseBudgetMessage(cloudEvent);
   const { costAmount, budgetAmount } = budget;

@@ -77,3 +77,17 @@ test('capBillingHandler: idempotent when billing already disabled', async () => 
   });
   assert.equal(client.calls.update.length, 0);
 });
+
+test('parseBudgetMessage: throws on non-JSON payload', () => {
+  const data = Buffer.from('not json at all').toString('base64');
+  assert.throws(() => parseBudgetMessage({ data: { message: { data } } }));
+});
+
+test('capBillingHandler: throws when projectId is missing', async () => {
+  const client = makeClient(true);
+  await assert.rejects(
+    () => capBillingHandler(makeEvent({ costAmount: 300, budgetAmount: 200 }), { client, projectId: '' }),
+    /projectId is required/,
+  );
+  assert.equal(client.calls.update.length, 0);
+});
