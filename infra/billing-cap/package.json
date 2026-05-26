@@ -1,0 +1,18 @@
+{
+  "name": "billing-cap",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test",
+    "start": "functions-framework --target=capBilling --signature-type=cloudevent"
+  },
+  "dependencies": {
+    "@google-cloud/billing": "^4.0.0",
+    "@google-cloud/functions-framework": "^3.4.0"
+  }
+}
