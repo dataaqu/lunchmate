@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="820" viewBox="0 0 800 820">
+<defs>
+  <filter id="sh" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="1" dy="2" stdDeviation="4" flood-color="#00000030"/>
+  </filter>
+  <filter id="grain">
+    <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feBlend in="SourceGraphic" mode="multiply" result="blend"/>
+    <feComposite in="blend" in2="SourceGraphic" operator="in"/>
+  </filter>
+</defs>
+<rect width="800" height="820" fill="#E0D8C4"/>
+<rect x="50" y="70" width="700" height="710" fill="#F4EFE4" stroke="#BBA878" stroke-width="2" rx="6"/>
+<text x="400" y="47" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="bold" fill="#2A1E08" letter-spacing="1">თბილისი — უბნები</text>
+<path d="M 50.0,557.9 L 122.2,568.8 L 201.5,579.7 L 280.9,590.7 L 360.3,601.6 L 432.5,608.9 L 504.6,616.2 L 576.8,623.4 L 656.2,630.7 L 750.0,638.0" fill="none" stroke="#5AAAC8" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+<path d="M 50.0,557.9 L 122.2,568.8 L 201.5,579.7 L 280.9,590.7 L 360.3,601.6 L 432.5,608.9 L 504.6,616.2 L 576.8,623.4 L 656.2,630.7 L 750.0,638.0" fill="none" stroke="#3090B8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.80"/>
+<text x="389.2" y="635.8" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#2070A0" font-style="italic" opacity="0.85">მტკვარი</text>
+  <circle cx="598.5" cy="244.8" r="127" fill="#BFA0D8" stroke="#6838A0" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <circle cx="423.8" cy="359.1" r="76" fill="#F0A080" stroke="#A83820" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <circle cx="337.2" cy="383.9" r="76" fill="#98D890" stroke="#307828" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <circle cx="297.5" cy="419.5" r="102" fill="#82C882" stroke="#308830" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <circle cx="277.3" cy="503.3" r="102" fill="#7EC8E3" stroke="#2878A8" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <circle cx="361.8" cy="549.9" r="61" fill="#D4B490" stroke="#784A18" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <circle cx="403.6" cy="588.8" r="61" fill="#F8D840" stroke="#887000" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <circle cx="443.3" cy="602.7" r="76" fill="#E8A57A" stroke="#A05828" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <circle cx="595.6" cy="616.9" r="76" fill="#E8D860" stroke="#808010" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <circle cx="525.6" cy="670.4" r="76" fill="#88C8F0" stroke="#1868A8" stroke-width="2.5" opacity="0.84" filter="url(#sh)"/>
+  <text x="598.5" y="249" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">გლდანი</text>
+  <text x="423.8" y="364" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">დიდუბე</text>
+  <text x="337.2" y="380" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">ნაძალა-</text>
+  <text x="337.2" y="396" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">დევი</text>
+  <text x="297.5" y="424" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">საბურთალო</text>
+  <text x="277.3" y="508" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">ვაკე</text>
+  <text x="361.8" y="554" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">ჩუღურეთი</text>
+  <text x="403.6" y="593" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">მთაწმინდა</text>
+  <text x="443.3" y="599" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">ძველი</text>
+  <text x="443.3" y="615" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">თბილისი</text>
+  <text x="595.6" y="621" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">ისანი</text>
+  <text x="525.6" y="675" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" stroke="rgba(255,255,255,0.92)" stroke-width="4" paint-order="stroke" fill="#150E00">კრწანისი</text>
+<polygon points="748,96 741,121 748,116 755,121" fill="#3A3020" stroke="none"/>
+<text x="748" y="92" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#3A3020">N</text>
+<rect x="62" y="761" width="66" height="10" fill="none" stroke="#555" stroke-width="1.5"/>
+<rect x="62" y="761" width="33" height="10" fill="#555" opacity="0.6"/>
+<text x="62" y="757" font-family="sans-serif" font-size="10" fill="#444">0</text>
+<text x="128" y="757" text-anchor="end" font-family="sans-serif" font-size="10" fill="#444">2 კმ</text>
+<text x="400" y="802" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#8A7A5A">სქემატური გამოსახულება · კოორდინატების გენერაცია: image-map.net</text>
+</svg>
