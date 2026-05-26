@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import { PlaceMarkers } from "./place-markers";
+import { DistrictFocus } from "./district-focus";
 
 const TBILISI: google.maps.LatLngLiteral = { lat: 41.7151, lng: 44.8271 };
 
@@ -83,6 +84,7 @@ export function GoogleMapComponent() {
   const category = VALID_CATEGORIES.has(raw ?? "")
     ? (raw as Category)
     : null;
+  const district = searchParams.get("district");
 
   return (
     <APIProvider apiKey={apiKey}>
@@ -97,7 +99,8 @@ export function GoogleMapComponent() {
         mapId={mapId}
         style={{ width: "100%", height: "100%" }}
       />
-      {category && <PlaceMarkers category={category} />}
+      <DistrictFocus district={district} />
+      {category && <PlaceMarkers category={category} district={district} />}
     </APIProvider>
   );
 }

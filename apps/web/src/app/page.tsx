@@ -3,6 +3,7 @@ import { MapPin } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { CategoryFilter } from "@/components/category-filter";
+import { ClearFilters } from "@/components/clear-filters";
 import { GoogleMapComponent } from "@/components/map-loader";
 import { DistrictPanel } from "@/components/district-panel";
 
@@ -25,13 +26,18 @@ export default function Home() {
 
       <main className="relative flex-1 min-h-0">
         <GoogleMapComponent />
-        <div className="absolute top-4 left-1/2 z-10 -translate-x-1/2">
+        <div className="absolute top-4 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2">
           <Suspense>
             <CategoryFilter />
           </Suspense>
+          <Suspense>
+            <ClearFilters />
+          </Suspense>
         </div>
         <div className="absolute top-4 left-4 z-10">
-          <DistrictPanel />
+          <Suspense>
+            <DistrictPanel />
+          </Suspense>
         </div>
       </main>
     </div>

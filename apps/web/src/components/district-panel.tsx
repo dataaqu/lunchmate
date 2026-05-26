@@ -1,11 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import { DISTRICTS } from "@/data/districts";
 import { DistrictMap } from "./district-map";
 
 export function DistrictPanel() {
-  const [active, setActive] = useState<string | null>(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const active = searchParams.get("district");
+
+  function select(name: string | null) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (!name) {
+      params.delete("district");
+    } else {
+      params.set("district", name);
+    }
+    const qs = params.toString();
+    router.replace(qs ? `?${qs}` : "/", { scroll: false });
+  }
 
   const activeLabel =
     active != null
@@ -21,7 +35,7 @@ export function DistrictPanel() {
         {active && (
           <button
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-            onClick={() => setActive(null)}
+            onClick={() => select(null)}
             aria-label="ფილტრის გასუფთავება"
           >
             ✕
@@ -29,7 +43,7 @@ export function DistrictPanel() {
         )}
       </div>
 
-      <DistrictMap activeDistrict={active} onSelect={setActive} />
+      <DistrictMap activeDistrict={active} onSelect={select} />
 
       <div className="px-3 py-2 min-h-[28px] text-center">
         {activeLabel ? (

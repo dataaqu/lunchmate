@@ -21,9 +21,10 @@ const CATEGORY_EMOJI: Record<Category, string> = {
 
 interface Props {
   category: Category;
+  district?: string | null;
 }
 
-export function PlaceMarkers({ category }: Props) {
+export function PlaceMarkers({ category, district }: Props) {
   const map = useMap();
   const markerLib = useMapsLibrary("marker");
   const router = useRouter();
@@ -36,7 +37,10 @@ export function PlaceMarkers({ category }: Props) {
     let cancelled = false;
     const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
-    fetch(`${apiUrl}/api/places?category=${category}`)
+    const params = new URLSearchParams({ category });
+    if (district) params.set("district", district);
+
+    fetch(`${apiUrl}/api/places?${params.toString()}`)
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json() as Promise<{ places?: Place[] }>;
@@ -83,7 +87,7 @@ export function PlaceMarkers({ category }: Props) {
       clustererRef.current = null;
       markersRef.current = [];
     };
-  }, [map, markerLib, category, router]);
+  }, [map, markerLib, category, district, router]);
 
   return null;
 }

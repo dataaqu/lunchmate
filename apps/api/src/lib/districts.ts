@@ -15,6 +15,7 @@ export const DISTRICTS: Record<string, DistrictCoords> = {
   krtsanisi: { latitude: 41.6731, longitude: 44.8139, radius: 1500 },
   mtatsminda: { latitude: 41.6955, longitude: 44.7970, radius: 1200 },
   chugureti: { latitude: 41.7062, longitude: 44.7912, radius: 1200 },
+  vera: { latitude: 41.7080, longitude: 44.7950, radius: 1000 },
 };
 
 export const TBILISI_DEFAULT: DistrictCoords = {

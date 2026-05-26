@@ -9,7 +9,15 @@ export interface District {
   label: string;
   coords: string;
   color: string;
+  /** Geographic centre (WGS84) — mirrors apps/api/src/lib/districts.ts. */
+  center: { lat: number; lng: number };
+  /** Approx. radius in metres, used to focus the Google Map on selection. */
+  radius: number;
 }
+
+/** Map centre + zoom used when no district is selected. */
+export const TBILISI_CENTER = { lat: 41.7151, lng: 44.8271 };
+export const TBILISI_DEFAULT_ZOOM = 12;
 
 export const DISTRICTS: District[] = [
   {
@@ -18,6 +26,8 @@ export const DISTRICTS: District[] = [
     // cx=598.5 cy=244.8 r=127
     coords: "726,245,688,335,599,372,509,335,472,245,509,155,599,118,688,155",
     color: "#BFA0D8",
+    center: { lat: 41.79, lng: 44.824 },
+    radius: 2500,
   },
   {
     name: "didube",
@@ -25,6 +35,8 @@ export const DISTRICTS: District[] = [
     // cx=423.8 cy=359.1 r=76
     coords: "500,359,478,413,424,435,370,413,348,359,370,305,424,283,478,305",
     color: "#F0A080",
+    center: { lat: 41.7586, lng: 44.7998 },
+    radius: 1500,
   },
   {
     name: "nadzaladevi",
@@ -32,6 +44,8 @@ export const DISTRICTS: District[] = [
     // cx=337.2 cy=383.9 r=76
     coords: "413,384,391,438,337,460,283,438,261,384,283,330,337,308,391,330",
     color: "#98D890",
+    center: { lat: 41.7518, lng: 44.7878 },
+    radius: 1500,
   },
   {
     name: "saburtalo",
@@ -39,6 +53,8 @@ export const DISTRICTS: District[] = [
     // cx=297.5 cy=419.5 r=102
     coords: "400,420,370,492,298,522,226,492,196,420,226,347,298,318,370,347",
     color: "#82C882",
+    center: { lat: 41.742, lng: 44.7823 },
+    radius: 2000,
   },
   {
     name: "vake",
@@ -46,6 +62,8 @@ export const DISTRICTS: District[] = [
     // cx=277.3 cy=503.3 r=102
     coords: "379,503,349,575,277,605,205,575,175,503,205,431,277,401,349,431",
     color: "#7EC8E3",
+    center: { lat: 41.719, lng: 44.7795 },
+    radius: 2000,
   },
   {
     name: "vera",
@@ -53,6 +71,8 @@ export const DISTRICTS: District[] = [
     // approximate: cx=320 cy=555 r=55 (between Vake and Chugureti)
     coords: "375,555,359,594,320,610,281,594,265,555,281,516,320,500,359,516",
     color: "#F0D0A0",
+    center: { lat: 41.708, lng: 44.795 },
+    radius: 1000,
   },
   {
     name: "chugureti",
@@ -60,6 +80,8 @@ export const DISTRICTS: District[] = [
     // cx=361.8 cy=549.9 r=61
     coords: "423,550,405,593,362,611,319,593,301,550,319,507,362,489,405,507",
     color: "#D4B490",
+    center: { lat: 41.7062, lng: 44.7912 },
+    radius: 1200,
   },
   {
     name: "mtatsminda",
@@ -67,6 +89,8 @@ export const DISTRICTS: District[] = [
     // cx=403.6 cy=588.8 r=61
     coords: "465,589,447,632,404,650,361,632,343,589,361,546,404,528,447,546",
     color: "#F8D840",
+    center: { lat: 41.6955, lng: 44.797 },
+    radius: 1200,
   },
   {
     name: "old_tbilisi",
@@ -74,6 +98,8 @@ export const DISTRICTS: District[] = [
     // cx=443.3 cy=602.7 r=76
     coords: "519,603,497,657,443,679,389,657,367,603,389,549,443,527,497,549",
     color: "#E8A57A",
+    center: { lat: 41.6917, lng: 44.8025 },
+    radius: 1500,
   },
   {
     name: "isani",
@@ -81,6 +107,8 @@ export const DISTRICTS: District[] = [
     // cx=595.6 cy=616.9 r=76
     coords: "672,617,649,671,596,693,542,671,520,617,542,563,596,541,649,563",
     color: "#E8D860",
+    center: { lat: 41.6878, lng: 44.8236 },
+    radius: 1500,
   },
   {
     name: "krtsanisi",
@@ -88,6 +116,8 @@ export const DISTRICTS: District[] = [
     // cx=525.6 cy=670.4 r=76
     coords: "602,670,579,724,526,746,472,724,450,670,472,616,526,594,579,616",
     color: "#88C8F0",
+    center: { lat: 41.6731, lng: 44.8139 },
+    radius: 1500,
   },
 ];
 
