@@ -31,6 +31,7 @@ export FN_SA=billing-cap-fn@${PROJECT_ID}.iam.gserviceaccount.com
 ```bash
 gcloud services enable \
   cloudbilling.googleapis.com \
+  billingbudgets.googleapis.com \
   cloudfunctions.googleapis.com \
   run.googleapis.com \
   cloudbuild.googleapis.com \
