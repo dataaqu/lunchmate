@@ -299,7 +299,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - Zod validation, error handling
 
 #### T3.5: Auth.js ↔ Hono JWT bridge
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: High
 - **Dependencies**: T3.1, T3.4
 - **Description**:
