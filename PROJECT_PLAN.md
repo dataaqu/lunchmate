@@ -116,7 +116,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - Billing account-ის მიბმა
 
 #### T1.5: Budget Alert + Billing Cap კონფიგურაცია
-- [ ] **Status**: TODO
+- [x] **Status**: DONE (code + runbook; GCP resources provisioned via `infra/billing-cap/README.md`)
 - **Complexity**: Low
 - **Dependencies**: T1.4
 - **Description**:

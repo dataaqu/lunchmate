@@ -1,0 +1,4 @@
+node_modules/
+index.test.js
+README.md
+.gitignore
