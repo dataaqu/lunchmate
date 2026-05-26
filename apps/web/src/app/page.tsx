@@ -4,6 +4,7 @@ import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CategoryFilter } from "@/components/category-filter";
 import { GoogleMapComponent } from "@/components/map-loader";
+import { DistrictPanel } from "@/components/district-panel";
 
 export default function Home() {
   return (
@@ -28,6 +29,9 @@ export default function Home() {
           <Suspense>
             <CategoryFilter />
           </Suspense>
+        </div>
+        <div className="absolute top-4 left-4 z-10">
+          <DistrictPanel />
         </div>
       </main>
     </div>
