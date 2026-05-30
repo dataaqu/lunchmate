@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, MapPin, Phone, Globe, Clock, Star } from "lucide-react";
+import { auth } from "@/auth";
+import { isFavorited } from "@/lib/api";
 import { Button } from "@/components/ui/button";
+import { FavoriteButton } from "@/components/favorite-button";
 import { PhotoCarousel } from "@/components/photo-carousel";
 
 interface PlaceDetail {
@@ -64,6 +67,10 @@ export default async function PlacePage({
   const place = await fetchPlace(placeId);
   if (!place) notFound();
 
+  const session = await auth();
+  const isAuthenticated = Boolean(session?.user?.id);
+  const favorited = isAuthenticated ? await isFavorited(placeId) : false;
+
   const name = place.displayName?.text ?? "ობიექტი";
   const openNow = place.regularOpeningHours?.openNow;
   const priceLabel = place.priceLevel ? PRICE_LEVEL[place.priceLevel] : null;
@@ -78,6 +85,12 @@ export default async function PlacePage({
             </Link>
           </Button>
           <span className="font-semibold tracking-tight truncate">{name}</span>
+          <FavoriteButton
+            placeId={placeId}
+            initialFavorited={favorited}
+            isAuthenticated={isAuthenticated}
+            className="ml-auto shrink-0"
+          />
         </div>
       </header>
 

@@ -2,6 +2,7 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
+import { favoritesRoute, meFavoritesRoute } from './routes/favorites.js';
 import { placesRoute } from './routes/places.js';
 import { placeReviewsRoute, reviewsRoute } from './routes/reviews.js';
 
@@ -32,6 +33,8 @@ app.get('/health', (c) =>
 app.route('/api/places', placesRoute);
 app.route('/api/places', placeReviewsRoute);
 app.route('/api/reviews', reviewsRoute);
+app.route('/api/favorites', favoritesRoute);
+app.route('/api/me', meFavoritesRoute);
 
 const port = Number.parseInt(process.env.PORT ?? '3001', 10);
 

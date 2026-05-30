@@ -67,3 +67,45 @@ export function deleteReview(id: string): Promise<Response> {
     method: "DELETE",
   });
 }
+
+/**
+ * Favorite a place for the signed-in user. Idempotent on the API side, so
+ * favoriting an already-favorited place still resolves successfully.
+ */
+export function addFavorite(placeId: string): Promise<Response> {
+  return apiFetch(`/api/favorites`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ placeId }),
+  });
+}
+
+/** Remove a place from the signed-in user's favorites. Idempotent (204). */
+export function removeFavorite(placeId: string): Promise<Response> {
+  return apiFetch(`/api/favorites/${encodeURIComponent(placeId)}`, {
+    method: "DELETE",
+  });
+}
+
+export interface Favorite {
+  placeId: string;
+  createdAt: string;
+}
+
+/**
+ * List the signed-in user's favorites, newest first. Returns an empty array
+ * for anonymous callers (the API answers 401, surfaced here as "no favorites")
+ * or on any transport error, so server components can render without throwing.
+ */
+export async function listFavorites(): Promise<Favorite[]> {
+  const res = await apiFetch(`/api/me/favorites`);
+  if (!res.ok) return [];
+  const data = (await res.json()) as { favorites: Favorite[] };
+  return data.favorites;
+}
+
+/** Whether the signed-in user has favorited a given place. */
+export async function isFavorited(placeId: string): Promise<boolean> {
+  const favorites = await listFavorites();
+  return favorites.some((f) => f.placeId === placeId);
+}

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { Heart, MapPin } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { CategoryFilter } from "@/components/category-filter";
@@ -22,6 +22,11 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2">
             <SearchCommand />
+            <Button variant="ghost" size="icon" asChild>
+              <Link href="/favorites" aria-label="რჩეულები">
+                <Heart className="size-5" />
+              </Link>
+            </Button>
             <Button variant="outline" size="sm" asChild>
               <Link href="/login">შესვლა</Link>
             </Button>
