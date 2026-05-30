@@ -7,6 +7,8 @@ import "../globals.css";
 
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
+import { localeAlternates } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,12 +31,35 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
+  const title = t("title");
+  const description = t("description");
+  // BCP-47 OG locale tags; ka → ka_GE, en → en_US.
+  const ogLocale = locale === "ka" ? "ka_GE" : "en_US";
+
   return {
+    metadataBase: new URL(siteUrl()),
     title: {
-      default: t("title"),
-      template: `%s · ${t("title")}`,
+      default: title,
+      template: `%s · ${title}`,
     },
-    description: t("description"),
+    description,
+    alternates: {
+      canonical: `/${locale}`,
+      languages: localeAlternates("/"),
+    },
+    openGraph: {
+      type: "website",
+      siteName: title,
+      title,
+      description,
+      url: `/${locale}`,
+      locale: ogLocale,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 

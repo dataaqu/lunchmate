@@ -72,6 +72,7 @@
   },
   "Place": {
     "fallbackName": "Place",
+    "metaDescription": "{name} — restaurants and cafés in Tbilisi. Ratings, opening hours and photos.",
     "openNow": "Open now",
     "closed": "Closed",
     "priceFree": "Free",

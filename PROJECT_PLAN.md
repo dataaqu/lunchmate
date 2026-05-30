@@ -374,7 +374,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - Lighthouse mobile audit ≥ 90
 
 #### T4.5: SEO + Open Graph
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Low
 - **Dependencies**: T2.5
 - **Description**:
