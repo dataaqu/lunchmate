@@ -343,7 +343,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - კლიკზე → place detail
 
 #### T4.2: რჩეულები (Favorites)
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Medium
 - **Dependencies**: T3.2, T3.6
 - **Description**:
