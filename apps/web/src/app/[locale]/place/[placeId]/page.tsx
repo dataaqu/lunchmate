@@ -1,65 +1,92 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MapPin, Phone, Globe, Clock, Star } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { auth } from "@/auth";
 import { isFavorited } from "@/lib/api";
+import { fetchPlace, PRICE_SYMBOLS, type PlaceDetail } from "@/lib/places";
+import { localeAlternates } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { FavoriteButton } from "@/components/favorite-button";
 import { PhotoCarousel } from "@/components/photo-carousel";
 
-interface PlaceDetail {
-  id: string;
-  displayName?: { text: string };
-  formattedAddress?: string;
-  rating?: number;
-  userRatingCount?: number;
-  priceLevel?: string;
-  primaryType?: string;
-  regularOpeningHours?: {
-    openNow?: boolean;
-    weekdayDescriptions?: string[];
-  };
-  internationalPhoneNumber?: string;
-  websiteUri?: string;
-  photos: string[];
-}
-
-// The ₾ symbols are locale-independent; only the "free" label is translated
-// (see `Place.priceFree`).
-const PRICE_SYMBOLS: Record<string, string> = {
-  PRICE_LEVEL_INEXPENSIVE: "₾",
-  PRICE_LEVEL_MODERATE: "₾₾",
-  PRICE_LEVEL_EXPENSIVE: "₾₾₾",
-  PRICE_LEVEL_VERY_EXPENSIVE: "₾₾₾₾",
-};
-
-async function fetchPlace(placeId: string): Promise<PlaceDetail | null> {
-  const apiUrl =
-    process.env.API_URL ??
-    process.env.NEXT_PUBLIC_API_URL ??
-    "http://localhost:3001";
-  const res = await fetch(
-    `${apiUrl}/api/places/${encodeURIComponent(placeId)}`,
-    { next: { revalidate: 300 } },
-  );
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error(`Places API error ${res.status}`);
-  const data = (await res.json()) as { place: PlaceDetail };
-  return data.place;
-}
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string; placeId: string }>;
-}) {
+}): Promise<Metadata> {
   const { locale, placeId } = await params;
   const place = await fetchPlace(placeId);
   const t = await getTranslations({ locale, namespace: "Place" });
-  const name = place?.displayName?.text ?? t("fallbackName");
-  return { title: name };
+
+  if (!place) {
+    return { title: t("fallbackName") };
+  }
+
+  const name = place.displayName?.text ?? t("fallbackName");
+  const description = place.formattedAddress
+    ? `${name} · ${place.formattedAddress}`
+    : t("metaDescription", { name });
+  const path = `/place/${placeId}`;
+  const url = `/${locale}${path}`;
+
+  return {
+    title: name,
+    description,
+    alternates: {
+      canonical: url,
+      languages: localeAlternates(path),
+    },
+    // `images` is supplied automatically from the colocated `opengraph-image.tsx`.
+    openGraph: { type: "website", title: name, description, url },
+    twitter: { card: "summary_large_image", title: name, description },
+  };
+}
+
+/**
+ * schema.org `Restaurant` JSON-LD for rich results. Only fields the Places API
+ * actually returned are included, so the markup never advertises empty data.
+ */
+function restaurantJsonLd(
+  place: PlaceDetail,
+  name: string,
+  canonical: string,
+  priceLabel: string | null,
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    name,
+    url: canonical,
+    ...(place.formattedAddress && {
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: place.formattedAddress,
+        addressLocality: "Tbilisi",
+        addressCountry: "GE",
+      },
+    }),
+    ...(place.internationalPhoneNumber && {
+      telephone: place.internationalPhoneNumber,
+    }),
+    ...(place.websiteUri && { sameAs: place.websiteUri }),
+    ...(place.photos.length > 0 && { image: place.photos.slice(0, 3) }),
+    ...(priceLabel && { priceRange: priceLabel }),
+    ...(place.rating !== undefined && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: place.rating,
+        ...(place.userRatingCount !== undefined && {
+          reviewCount: place.userRatingCount,
+        }),
+        bestRating: 5,
+        worstRating: 1,
+      },
+    }),
+  };
 }
 
 export default async function PlacePage({
@@ -86,8 +113,23 @@ export default async function PlacePage({
       : (PRICE_SYMBOLS[place.priceLevel] ?? null)
     : null;
 
+  const jsonLd = restaurantJsonLd(
+    place,
+    name,
+    `${siteUrl()}/${locale}/place/${placeId}`,
+    priceLabel,
+  );
+
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        // Structured data, but place names come from the Places API — escape `<`
+        // so a malicious name can't break out of the <script> with `</script>`.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <header className="border-b shrink-0">
         <div className="mx-auto flex w-full max-w-screen-md items-center gap-3 px-6 py-4">
           <Button variant="ghost" size="icon" asChild>
