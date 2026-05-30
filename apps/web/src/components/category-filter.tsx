@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type Category = "restaurant" | "cafe" | "fast_food";
 
@@ -13,7 +14,16 @@ const CATEGORIES: { value: Category; emoji: string; labelKey: string }[] = [
   { value: "fast_food", emoji: "🍔", labelKey: "fastFood" },
 ];
 
-export function CategoryFilter() {
+interface Props {
+  /**
+   * Drop the floating-overlay pill (white background + shadow) and let the
+   * buttons wrap. Used inside the mobile filters drawer, where the chrome is
+   * provided by the sheet itself.
+   */
+  bare?: boolean;
+}
+
+export function CategoryFilter({ bare = false }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -32,7 +42,14 @@ export function CategoryFilter() {
   }
 
   return (
-    <div className="flex gap-2 rounded-xl bg-white/90 px-3 py-2 shadow-md backdrop-blur-sm">
+    <div
+      className={cn(
+        "flex gap-2",
+        bare
+          ? "flex-wrap"
+          : "rounded-xl bg-white/90 px-3 py-2 shadow-md backdrop-blur-sm",
+      )}
+    >
       {CATEGORIES.map(({ value, emoji, labelKey }) => (
         <Button
           key={value}
