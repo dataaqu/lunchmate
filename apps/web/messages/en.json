@@ -33,7 +33,11 @@
     "fastFood": "Fast food"
   },
   "Filters": {
-    "clear": "Clear filters"
+    "clear": "Clear filters",
+    "title": "Filters",
+    "description": "Filter places by category and district",
+    "category": "Category",
+    "done": "Done"
   },
   "Districts": {
     "title": "District",

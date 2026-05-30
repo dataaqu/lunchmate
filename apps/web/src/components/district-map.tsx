@@ -37,7 +37,12 @@ export function DistrictMap({
   }
 
   return (
-    <div className={`relative w-full${className ? ` ${className}` : ""}`}>
+    <div
+      className={`relative w-full${className ? ` ${className}` : ""}`}
+      // Keep map taps/drags from being swallowed by the vaul drawer's
+      // drag-to-dismiss gesture when this renders inside the mobile sheet.
+      data-vaul-no-drag
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/tbilisi-map.png"
@@ -70,11 +75,19 @@ export function DistrictMap({
                 fillOpacity: isActive ? 0.6 : isHovered ? 0.4 : 0.15,
                 strokeOpacity: isActive || isHovered ? 0.9 : 0.4,
                 cursor: "pointer",
+                // Remove the 300 ms tap delay and stop touches on a polygon
+                // from panning/zooming the surrounding page.
+                touchAction: "manipulation",
                 transition:
                   "fill-opacity 0.15s ease, stroke-opacity 0.15s ease",
               }}
               onMouseEnter={() => setHovered(district.name)}
               onMouseLeave={() => setHovered(null)}
+              // Touch feedback: highlight on press, clear once the tap ends
+              // (the click handler that follows toggles the actual selection).
+              onTouchStart={() => setHovered(district.name)}
+              onTouchEnd={() => setHovered(null)}
+              onTouchCancel={() => setHovered(null)}
               onClick={() => handleClick(district.name)}
             />
           );

@@ -8,6 +8,7 @@ import { CategoryFilter } from "@/components/category-filter";
 import { ClearFilters } from "@/components/clear-filters";
 import { GoogleMapComponent } from "@/components/map-loader";
 import { DistrictPanel } from "@/components/district-panel";
+import { MobileFilters } from "@/components/mobile-filters";
 import { SearchCommand } from "@/components/search-command";
 import { LanguageSwitcher } from "@/components/language-switcher";
 
@@ -42,7 +43,10 @@ export default function Home() {
 
       <main className="relative flex-1 min-h-0">
         <GoogleMapComponent />
-        <div className="absolute top-4 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2">
+
+        {/* Desktop / tablet: floating overlays. Hidden on small screens
+            where they would crowd the map — replaced by the bottom sheet. */}
+        <div className="absolute top-4 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex">
           <Suspense>
             <CategoryFilter />
           </Suspense>
@@ -50,9 +54,16 @@ export default function Home() {
             <ClearFilters />
           </Suspense>
         </div>
-        <div className="absolute top-4 left-4 z-10">
+        <div className="absolute top-4 left-4 z-10 hidden md:block">
           <Suspense>
             <DistrictPanel />
+          </Suspense>
+        </div>
+
+        {/* Mobile: single floating button opening the filters bottom sheet. */}
+        <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 md:hidden">
+          <Suspense>
+            <MobileFilters />
           </Suspense>
         </div>
       </main>
