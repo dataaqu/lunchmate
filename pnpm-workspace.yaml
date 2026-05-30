@@ -2,6 +2,11 @@ packages:
   - "apps/*"
   - "packages/*"
 allowBuilds:
+  # next-intl pulls these in transitively; both ship prebuilt per-platform
+  # binaries, so their source-build postinstall is an unused fallback — skip it
+  # (acknowledged here so `pnpm install --frozen-lockfile` in CI doesn't error).
+  '@parcel/watcher': false
+  '@swc/core': false
   esbuild: true
   sharp: true
   unrs-resolver: true

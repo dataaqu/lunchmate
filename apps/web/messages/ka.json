@@ -1,0 +1,86 @@
+{
+  "Metadata": {
+    "title": "თბილისის კვების გიდი",
+    "description": "ინტერაქტიული რუკა თბილისში ჩამოსული ტურისტებისთვის — რესტორნები, კაფეები და სწრაფი კვების ობიექტები უბნებისა და კატეგორიების მიხედვით."
+  },
+  "Common": {
+    "appName": "თბილისის კვების გიდი",
+    "backToMap": "უკან რუკაზე"
+  },
+  "LanguageSwitcher": {
+    "label": "ენა",
+    "ka": "ქართული",
+    "en": "English"
+  },
+  "Nav": {
+    "favorites": "რჩეულები",
+    "login": "შესვლა"
+  },
+  "Search": {
+    "trigger": "ძებნა სახელით…",
+    "triggerAria": "ძებნა სახელით",
+    "dialogTitle": "ძებნა სახელით",
+    "dialogDescription": "მოძებნე რესტორანი, კაფე ან სწრაფი კვების ობიექტი სახელით",
+    "inputPlaceholder": "მოძებნე ობიექტი სახელით…",
+    "loading": "იძებნება…",
+    "minChars": "აკრიფე მინიმუმ {count} სიმბოლო…",
+    "empty": "ვერაფერი მოიძებნა.",
+    "group": "ობიექტები"
+  },
+  "Categories": {
+    "restaurant": "რესტორანი",
+    "cafe": "კაფე",
+    "fastFood": "სწრაფი კვება"
+  },
+  "Filters": {
+    "clear": "ფილტრის გასუფთავება"
+  },
+  "Districts": {
+    "title": "უბანი",
+    "clearAria": "ფილტრის გასუფთავება",
+    "none": "უბანი არ არის არჩეული",
+    "mapAlt": "თბილისის უბნების სქემატური რუკა"
+  },
+  "Login": {
+    "pageTitle": "შესვლა",
+    "heading": "ანგარიშზე შესვლა",
+    "subtitle": "შედით Google-ით ან მიიღეთ შესვლის ბმული ელფოსტაზე.",
+    "google": "Google-ით შესვლა",
+    "or": "ან",
+    "emailLabel": "ელფოსტა",
+    "emailPlaceholder": "you@example.com",
+    "submitMagic": "ბმულის მიღება ელფოსტით",
+    "sentTitle": "შესვლის ბმული გამოგზავნილია",
+    "sentDescription": "შეამოწმეთ {email} — გამოგზავნეთ ბმული შესასვლელად.",
+    "errorEmailRequired": "შეიყვანეთ ელფოსტა",
+    "errorEmailInvalid": "არასწორი ელფოსტის ფორმატი",
+    "errorMagicFailed": "ბმულის გაგზავნა ვერ მოხერხდა. სცადეთ თავიდან.",
+    "errorEmailUnavailable": "ელფოსტით შესვლა ამჟამად მიუწვდომელია. გამოიყენეთ Google.",
+    "dialogTitle": "შესვლა",
+    "dialogDescription": "შედით ანგარიშზე კომენტარის დასატოვებლად და შეფასების მისაცემად."
+  },
+  "Favorites": {
+    "pageTitle": "რჩეულები",
+    "heading": "რჩეულები",
+    "empty": "ჯერ არ გაქვთ რჩეული ობიექტი.",
+    "backToMap": "რუკაზე დაბრუნება",
+    "allRemoved": "ყველა რჩეული წაიშალა.",
+    "addAria": "რჩეულებში დამატება",
+    "removeAria": "რჩეულებიდან ამოშლა",
+    "toggleError": "ვერ შესრულდა. სცადეთ თავიდან.",
+    "fallbackName": "ობიექტი"
+  },
+  "Place": {
+    "fallbackName": "ობიექტი",
+    "openNow": "გახსნილია",
+    "closed": "დახურულია",
+    "priceFree": "უფასო",
+    "prevPhoto": "წინა ფოტო",
+    "nextPhoto": "შემდეგი ფოტო",
+    "photoAlt": "{prefix} — ფოტო {index}",
+    "photoIndicator": "ფოტო {index}"
+  },
+  "Map": {
+    "loading": "რუკა იტვირთება"
+  }
+}

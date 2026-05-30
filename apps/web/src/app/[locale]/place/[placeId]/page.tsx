@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { ArrowLeft, MapPin, Phone, Globe, Clock, Star } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+
 import { auth } from "@/auth";
 import { isFavorited } from "@/lib/api";
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { FavoriteButton } from "@/components/favorite-button";
 import { PhotoCarousel } from "@/components/photo-carousel";
@@ -24,8 +26,9 @@ interface PlaceDetail {
   photos: string[];
 }
 
-const PRICE_LEVEL: Record<string, string> = {
-  PRICE_LEVEL_FREE: "უფასო",
+// The ₾ symbols are locale-independent; only the "free" label is translated
+// (see `Place.priceFree`).
+const PRICE_SYMBOLS: Record<string, string> = {
   PRICE_LEVEL_INEXPENSIVE: "₾",
   PRICE_LEVEL_MODERATE: "₾₾",
   PRICE_LEVEL_EXPENSIVE: "₾₾₾",
@@ -50,20 +53,24 @@ async function fetchPlace(placeId: string): Promise<PlaceDetail | null> {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ placeId: string }>;
+  params: Promise<{ locale: string; placeId: string }>;
 }) {
-  const { placeId } = await params;
+  const { locale, placeId } = await params;
   const place = await fetchPlace(placeId);
-  const name = place?.displayName?.text ?? "ობიექტი";
+  const t = await getTranslations({ locale, namespace: "Place" });
+  const name = place?.displayName?.text ?? t("fallbackName");
   return { title: name };
 }
 
 export default async function PlacePage({
   params,
 }: {
-  params: Promise<{ placeId: string }>;
+  params: Promise<{ locale: string; placeId: string }>;
 }) {
-  const { placeId } = await params;
+  const { locale, placeId } = await params;
+  const t = await getTranslations({ locale, namespace: "Place" });
+  const tc = await getTranslations({ locale, namespace: "Common" });
+
   const place = await fetchPlace(placeId);
   if (!place) notFound();
 
@@ -71,16 +78,20 @@ export default async function PlacePage({
   const isAuthenticated = Boolean(session?.user?.id);
   const favorited = isAuthenticated ? await isFavorited(placeId) : false;
 
-  const name = place.displayName?.text ?? "ობიექტი";
+  const name = place.displayName?.text ?? t("fallbackName");
   const openNow = place.regularOpeningHours?.openNow;
-  const priceLabel = place.priceLevel ? PRICE_LEVEL[place.priceLevel] : null;
+  const priceLabel = place.priceLevel
+    ? place.priceLevel === "PRICE_LEVEL_FREE"
+      ? t("priceFree")
+      : (PRICE_SYMBOLS[place.priceLevel] ?? null)
+    : null;
 
   return (
     <div className="flex flex-col min-h-screen">
       <header className="border-b shrink-0">
         <div className="mx-auto flex w-full max-w-screen-md items-center gap-3 px-6 py-4">
           <Button variant="ghost" size="icon" asChild>
-            <Link href="/" aria-label="უკან რუკაზე">
+            <Link href="/" aria-label={tc("backToMap")}>
               <ArrowLeft className="size-5" />
             </Link>
           </Button>
@@ -123,7 +134,7 @@ export default async function PlacePage({
                       : "font-medium text-red-500"
                   }
                 >
-                  {openNow ? "გახსნილია" : "დახურულია"}
+                  {openNow ? t("openNow") : t("closed")}
                 </span>
               )}
             </div>

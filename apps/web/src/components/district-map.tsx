@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
+
 import {
   DISTRICTS,
   DISTRICT_MAP_WIDTH,
@@ -28,6 +30,7 @@ export function DistrictMap({
   className,
 }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
+  const t = useTranslations("Districts");
 
   function handleClick(name: string) {
     onSelect(activeDistrict === name ? null : name);
@@ -38,7 +41,7 @@ export function DistrictMap({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/tbilisi-map.png"
-        alt="თბილისის უბნების სქემატური რუკა"
+        alt={t("mapAlt")}
         width={DISTRICT_MAP_WIDTH}
         height={DISTRICT_MAP_HEIGHT}
         useMap="#tbilisi-districts"

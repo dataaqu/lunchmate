@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 
 import {
   Dialog,
@@ -28,6 +29,7 @@ export function LoginDialog({
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }) {
+  const t = useTranslations("Login");
   const [internalOpen, setInternalOpen] = React.useState(false);
   const isControlled = open !== undefined;
   const isOpen = isControlled ? open : internalOpen;
@@ -42,10 +44,8 @@ export function LoginDialog({
       {children ? <DialogTrigger asChild>{children}</DialogTrigger> : null}
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>შესვლა</DialogTitle>
-          <DialogDescription>
-            შედით ანგარიშზე კომენტარის დასატოვებლად და შეფასების მისაცემად.
-          </DialogDescription>
+          <DialogTitle>{t("dialogTitle")}</DialogTitle>
+          <DialogDescription>{t("dialogDescription")}</DialogDescription>
         </DialogHeader>
         <LoginOptions onSuccess={() => setOpen(false)} />
       </DialogContent>

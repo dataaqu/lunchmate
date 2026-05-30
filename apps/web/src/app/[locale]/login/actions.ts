@@ -1,6 +1,7 @@
 "use server";
 
 import { AuthError } from "next-auth";
+import { getTranslations } from "next-intl/server";
 
 import { signIn } from "@/auth";
 
@@ -21,6 +22,7 @@ export async function signInWithGoogle(): Promise<void> {
 }
 
 export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
+  const t = await getTranslations("Login");
   try {
     await signIn("nodemailer", { email, redirect: false, redirectTo: "/" });
     return { ok: true };
@@ -28,13 +30,13 @@ export async function sendMagicLink(email: string): Promise<MagicLinkResult> {
     if (error instanceof AuthError) {
       return {
         ok: false,
-        error: "ბმულის გაგზავნა ვერ მოხერხდა. სცადეთ თავიდან.",
+        error: t("errorMagicFailed"),
       };
     }
     // Provider not configured (no EMAIL_SERVER) or unexpected failure.
     return {
       ok: false,
-      error: "ელფოსტით შესვლა ამჟამად მიუწვდომელია. გამოიყენეთ Google.",
+      error: t("errorEmailUnavailable"),
     };
   }
 }

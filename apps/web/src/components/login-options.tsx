@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useFormStatus } from "react-dom";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,19 +18,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { sendMagicLink, signInWithGoogle } from "@/app/login/actions";
+import { sendMagicLink, signInWithGoogle } from "@/app/[locale]/login/actions";
 
-const emailSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "შეიყვანეთ ელფოსტა" })
-    .email({ message: "არასწორი ელფოსტის ფორმატი" }),
-});
-
-type EmailValues = z.infer<typeof emailSchema>;
+type EmailValues = { email: string };
 
 function GoogleSubmit() {
   const { pending } = useFormStatus();
+  const t = useTranslations("Login");
 
   return (
     <Button
@@ -43,12 +38,21 @@ function GoogleSubmit() {
       ) : (
         <GoogleIcon className="size-4" />
       )}
-      Google-ით შესვლა
+      {t("google")}
     </Button>
   );
 }
 
 export function LoginOptions({ onSuccess }: { onSuccess?: () => void }) {
+  const t = useTranslations("Login");
+
+  const emailSchema = z.object({
+    email: z
+      .string()
+      .min(1, { message: t("errorEmailRequired") })
+      .email({ message: t("errorEmailInvalid") }),
+  });
+
   const form = useForm<EmailValues>({
     resolver: zodResolver(emailSchema),
     defaultValues: { email: "" },
@@ -57,8 +61,8 @@ export function LoginOptions({ onSuccess }: { onSuccess?: () => void }) {
   async function onSubmit({ email }: EmailValues) {
     const result = await sendMagicLink(email);
     if (result.ok) {
-      toast.success("შესვლის ბმული გამოგზავნილია", {
-        description: `შეამოწმეთ ${email} — გამოგზავნეთ ბმული შესასვლელად.`,
+      toast.success(t("sentTitle"), {
+        description: t("sentDescription", { email }),
       });
       form.reset();
       onSuccess?.();
@@ -75,7 +79,7 @@ export function LoginOptions({ onSuccess }: { onSuccess?: () => void }) {
 
       <div className="flex items-center gap-3 text-xs text-muted-foreground">
         <span className="h-px flex-1 bg-border" />
-        <span>ან</span>
+        <span>{t("or")}</span>
         <span className="h-px flex-1 bg-border" />
       </div>
 
@@ -90,13 +94,13 @@ export function LoginOptions({ onSuccess }: { onSuccess?: () => void }) {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>ელფოსტა</FormLabel>
+                <FormLabel>{t("emailLabel")}</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
                     inputMode="email"
                     autoComplete="email"
-                    placeholder="you@example.com"
+                    placeholder={t("emailPlaceholder")}
                     {...field}
                   />
                 </FormControl>
@@ -112,7 +116,7 @@ export function LoginOptions({ onSuccess }: { onSuccess?: () => void }) {
             {form.formState.isSubmitting && (
               <Loader2 className="animate-spin" />
             )}
-            ბმულის მიღება ელფოსტით
+            {t("submitMagic")}
           </Button>
         </form>
       </Form>

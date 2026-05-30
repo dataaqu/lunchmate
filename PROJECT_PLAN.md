@@ -353,7 +353,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - `/favorites` გვერდი მომხმარებლისთვის
 
 #### T4.3: next-intl — ინგლისური ენის დამატება
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Medium
 - **Dependencies**: T1.2
 - **Description**:
