@@ -1,10 +1,24 @@
 import { Hono } from 'hono';
+import {
+  buildAutocompleteRequest,
+  MIN_QUERY_LENGTH,
+  normalizeSuggestions,
+  type AutocompleteSuggestion,
+  type RawAutocompleteResponse,
+} from '../lib/autocomplete.js';
 import { CATEGORY_PLACE_TYPES, isValidCategory } from '../lib/category-map.js';
 import { getDistrict } from '../lib/districts.js';
 import { placesCache } from '../lib/places-cache.js';
 
 const PLACES_API_URL = 'https://places.googleapis.com/v1/places:searchNearby';
+const PLACES_AUTOCOMPLETE_URL = 'https://places.googleapis.com/v1/places:autocomplete';
 const PLACES_DETAIL_BASE = 'https://places.googleapis.com/v1/places';
+
+const AUTOCOMPLETE_FIELD_MASK = [
+  'suggestions.placePrediction.placeId',
+  'suggestions.placePrediction.text',
+  'suggestions.placePrediction.structuredFormat',
+].join(',');
 
 const FIELD_MASK = [
   'places.id',
@@ -138,6 +152,48 @@ placesRoute.get('/', async (c) => {
   placesCache.set(cacheKey, places);
 
   return c.json({ places, cached: false });
+});
+
+// Registered before `/:placeId` so the literal segment wins over the param.
+placesRoute.get('/autocomplete', async (c) => {
+  const apiKey = process.env['GOOGLE_PLACES_API_KEY'];
+  if (!apiKey) {
+    return c.json({ error: 'Server misconfiguration: missing Places API key' }, 500);
+  }
+
+  const q = (c.req.query('q') ?? '').trim();
+  if (q.length < MIN_QUERY_LENGTH) {
+    return c.json({ suggestions: [] });
+  }
+
+  const cacheKey = `autocomplete:${q.toLowerCase()}`;
+  const cached = placesCache.get<AutocompleteSuggestion[]>(cacheKey);
+  if (cached) {
+    return c.json({ suggestions: cached, cached: true });
+  }
+
+  const response = await fetch(PLACES_AUTOCOMPLETE_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': apiKey,
+      'X-Goog-FieldMask': AUTOCOMPLETE_FIELD_MASK,
+    },
+    body: JSON.stringify(buildAutocompleteRequest(q)),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`[autocomplete] Google API error ${response.status}: ${errorText}`);
+    return c.json({ error: 'Upstream error from Google Places API' }, 502);
+  }
+
+  const data = (await response.json()) as RawAutocompleteResponse;
+  const suggestions = normalizeSuggestions(data);
+
+  placesCache.set(cacheKey, suggestions);
+
+  return c.json({ suggestions, cached: false });
 });
 
 placesRoute.get('/:placeId', async (c) => {

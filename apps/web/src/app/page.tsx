@@ -7,6 +7,7 @@ import { CategoryFilter } from "@/components/category-filter";
 import { ClearFilters } from "@/components/clear-filters";
 import { GoogleMapComponent } from "@/components/map-loader";
 import { DistrictPanel } from "@/components/district-panel";
+import { SearchCommand } from "@/components/search-command";
 
 export default function Home() {
   return (
@@ -19,9 +20,12 @@ export default function Home() {
               თბილისის კვების გიდი
             </span>
           </div>
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/login">შესვლა</Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <SearchCommand />
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/login">შესვლა</Link>
+            </Button>
+          </div>
         </div>
       </header>
 
