@@ -3,6 +3,9 @@ import Link from "next/link";
 import { ArrowLeft, MapPin, Phone, Globe, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PhotoCarousel } from "@/components/photo-carousel";
+import { ReviewsList } from "@/components/reviews-list";
+import { auth } from "@/auth";
+import { getReviews, type ReviewsPage } from "@/lib/api";
 
 interface PlaceDetail {
   id: string;
@@ -63,6 +66,19 @@ export default async function PlacePage({
   const { placeId } = await params;
   const place = await fetchPlace(placeId);
   if (!place) notFound();
+
+  const [session, reviewsPage] = await Promise.all([
+    auth(),
+    // A reviews failure shouldn't take down the whole place page — degrade to
+    // an empty list (the section renders its own empty state).
+    getReviews(placeId, { limit: 20, offset: 0 }).catch(
+      (): ReviewsPage => ({
+        reviews: [],
+        aggregate: { count: 0, average: null },
+        pagination: { limit: 20, offset: 0 },
+      }),
+    ),
+  ]);
 
   const name = place.displayName?.text ?? "ობიექტი";
   const openNow = place.regularOpeningHours?.openNow;
@@ -166,6 +182,12 @@ export default async function PlacePage({
             </div>
           )}
         </div>
+
+        <ReviewsList
+          placeId={placeId}
+          initial={reviewsPage}
+          currentUserId={session?.user?.id ?? null}
+        />
       </main>
     </div>
   );

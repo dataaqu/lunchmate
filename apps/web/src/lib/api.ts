@@ -37,6 +37,51 @@ export async function apiFetch(
   return fetch(url, { ...init, headers });
 }
 
+export interface ReviewAuthor {
+  id: string;
+  name: string | null;
+  image: string | null;
+}
+
+export interface Review {
+  id: string;
+  placeId: string;
+  rating: number;
+  comment: string | null;
+  createdAt: string;
+  author: ReviewAuthor;
+}
+
+export interface ReviewAggregate {
+  count: number;
+  average: number | null;
+}
+
+export interface ReviewsPage {
+  reviews: Review[];
+  aggregate: ReviewAggregate;
+  pagination: { limit: number; offset: number };
+}
+
+/**
+ * Fetch a page of reviews for a place (public GET — newest first). Returns the
+ * page rows plus an aggregate (total count + mean rating) used to render the
+ * average and gate the "show more" control. Throws on a non-OK response so
+ * callers / the error boundary can react.
+ */
+export async function getReviews(
+  placeId: string,
+  { limit = 20, offset = 0 }: { limit?: number; offset?: number } = {},
+): Promise<ReviewsPage> {
+  const query = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+  const res = await apiFetch(
+    `/api/places/${encodeURIComponent(placeId)}/reviews?${query}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) throw new Error(`Reviews API error ${res.status}`);
+  return (await res.json()) as ReviewsPage;
+}
+
 export interface CreateReviewInput {
   rating: number;
   comment?: string;

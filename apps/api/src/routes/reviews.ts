@@ -1,8 +1,8 @@
-import { and, desc, eq } from 'drizzle-orm';
+import { and, avg, count, desc, eq } from 'drizzle-orm';
 import { db, reviews, users } from '@tfg/db';
 import { Hono } from 'hono';
 import { requireAuth, type AuthVariables } from '../lib/auth.js';
-import { createReviewSchema, parsePagination } from '../lib/review-schema.js';
+import { createReviewSchema, normalizeAggregate, parsePagination } from '../lib/review-schema.js';
 
 /**
  * Place-scoped review endpoints. Mounted at `/api/places`, so the full paths
@@ -11,27 +11,37 @@ import { createReviewSchema, parsePagination } from '../lib/review-schema.js';
 export const placeReviewsRoute = new Hono<{ Variables: AuthVariables }>();
 
 // GET /api/places/:placeId/reviews — public, paginated, newest first.
+// Returns the requested page plus an `aggregate` (total count + mean rating
+// across ALL reviews) so the UI can show an average and gate "show more".
 placeReviewsRoute.get('/:placeId/reviews', async (c) => {
   const placeId = c.req.param('placeId');
   const { limit, offset } = parsePagination(c.req.query('limit'), c.req.query('offset'));
 
-  const rows = await db
-    .select({
-      id: reviews.id,
-      placeId: reviews.placeId,
-      rating: reviews.rating,
-      comment: reviews.comment,
-      createdAt: reviews.createdAt,
-      author: { id: users.id, name: users.name, image: users.image },
-    })
-    .from(reviews)
-    .innerJoin(users, eq(reviews.userId, users.id))
-    .where(eq(reviews.placeId, placeId))
-    .orderBy(desc(reviews.createdAt))
-    .limit(limit)
-    .offset(offset);
+  const [rows, [rawAggregate]] = await Promise.all([
+    db
+      .select({
+        id: reviews.id,
+        placeId: reviews.placeId,
+        rating: reviews.rating,
+        comment: reviews.comment,
+        createdAt: reviews.createdAt,
+        author: { id: users.id, name: users.name, image: users.image },
+      })
+      .from(reviews)
+      .innerJoin(users, eq(reviews.userId, users.id))
+      .where(eq(reviews.placeId, placeId))
+      .orderBy(desc(reviews.createdAt))
+      .limit(limit)
+      .offset(offset),
+    db
+      .select({ count: count(), average: avg(reviews.rating) })
+      .from(reviews)
+      .where(eq(reviews.placeId, placeId)),
+  ]);
 
-  return c.json({ reviews: rows, pagination: { limit, offset } });
+  const aggregate = normalizeAggregate(rawAggregate ?? { count: 0, average: null });
+
+  return c.json({ reviews: rows, aggregate, pagination: { limit, offset } });
 });
 
 // POST /api/places/:placeId/reviews — authenticated, rating 1-5.

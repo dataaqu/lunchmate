@@ -34,3 +34,29 @@ function clampInt(raw: string | undefined, fallback: number, min: number, max: n
   if (Number.isNaN(parsed)) return fallback;
   return Math.min(Math.max(parsed, min), max);
 }
+
+/** Aggregate rating stats for a place's reviews. */
+export interface ReviewAggregate {
+  /** Total number of reviews for the place (across all pages). */
+  count: number;
+  /** Mean rating rounded to one decimal, or `null` when there are no reviews. */
+  average: number | null;
+}
+
+/**
+ * Normalise the raw `count(*)` / `avg(rating)` result from Drizzle into a clean
+ * aggregate. Postgres returns `avg` as a numeric string (and `count` may arrive
+ * as a string depending on the driver), so coerce both. The average is rounded
+ * to one decimal; an empty place yields `{ count: 0, average: null }`.
+ */
+export function normalizeAggregate(raw: {
+  count: number | string | null;
+  average: number | string | null;
+}): ReviewAggregate {
+  const count = typeof raw.count === 'string' ? Number.parseInt(raw.count, 10) : raw.count ?? 0;
+  if (!count || count <= 0) return { count: 0, average: null };
+
+  const avgNum = raw.average === null ? NaN : Number(raw.average);
+  const average = Number.isNaN(avgNum) ? null : Math.round(avgNum * 10) / 10;
+  return { count, average };
+}
