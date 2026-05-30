@@ -319,7 +319,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - Optimistic update React Query-ით ან Server Action-ით
 
 #### T3.7: კომენტარების სია
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Low
 - **Dependencies**: T3.4, T2.5
 - **Description**:
