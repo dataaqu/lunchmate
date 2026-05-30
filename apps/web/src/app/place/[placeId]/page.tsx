@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, MapPin, Phone, Globe, Clock, Star } from "lucide-react";
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { PhotoCarousel } from "@/components/photo-carousel";
+import { ReviewForm } from "@/components/review-form";
 
 interface PlaceDetail {
   id: string;
@@ -61,7 +63,7 @@ export default async function PlacePage({
   params: Promise<{ placeId: string }>;
 }) {
   const { placeId } = await params;
-  const place = await fetchPlace(placeId);
+  const [place, session] = await Promise.all([fetchPlace(placeId), auth()]);
   if (!place) notFound();
 
   const name = place.displayName?.text ?? "ობიექტი";
@@ -165,6 +167,13 @@ export default async function PlacePage({
               </div>
             </div>
           )}
+
+          <hr className="border-t" />
+
+          <ReviewForm
+            placeId={place.id}
+            isAuthenticated={Boolean(session?.user?.id)}
+          />
         </div>
       </main>
     </div>
