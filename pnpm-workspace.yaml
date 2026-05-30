@@ -6,6 +6,10 @@ allowBuilds:
   # binaries, so their source-build postinstall is an unused fallback — skip it
   # (acknowledged here so `pnpm install --frozen-lockfile` in CI doesn't error).
   '@parcel/watcher': false
+  # @sentry/cli's postinstall downloads a binary used only for build-time source-map
+  # upload. CI sets no SENTRY_AUTH_TOKEN (no upload) and the binary is unused at
+  # runtime, so skip the download — keeps `pnpm install --frozen-lockfile` from erroring.
+  '@sentry/cli': false
   '@swc/core': false
   esbuild: true
   sharp: true

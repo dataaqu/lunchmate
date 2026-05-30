@@ -52,8 +52,12 @@ cp packages/db/.env.example packages/db/.env.local
 
 **Production secrets** — `.env` ფაილებში **არ** ინახება. რეალური key-ები იწერება hosting პლატფორმის env settings-ში:
 
-- **Web → Vercel:** Project → Settings → Environment Variables (`NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, `NEXTAUTH_*`, `NEXT_PUBLIC_API_URL`).
-- **API → Railway:** Service → Variables (`GOOGLE_PLACES_API_KEY`, `DATABASE_URL`, `CORS_ORIGIN`, `PORT`).
+- **Web → Vercel:** Project → Settings → Environment Variables (`NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, `NEXTAUTH_*`, `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_SENTRY_DSN`).
+- **API → Railway:** Service → Variables (`GOOGLE_PLACES_API_KEY`, `DATABASE_URL`, `CORS_ORIGIN`, `PORT`, `SENTRY_DSN`).
+
+## Monitoring & performance
+
+Analytics, Speed Insights, Sentry, and Google Cloud quota/billing alerts — see [`docs/monitoring.md`](./docs/monitoring.md). Sentry stays a no-op until a DSN is configured.
 
 ## Plan
 
