@@ -1,0 +1,86 @@
+{
+  "Metadata": {
+    "title": "Tbilisi Food Guide",
+    "description": "An interactive map for tourists in Tbilisi — restaurants, cafés and fast-food spots by district and category."
+  },
+  "Common": {
+    "appName": "Tbilisi Food Guide",
+    "backToMap": "Back to map"
+  },
+  "LanguageSwitcher": {
+    "label": "Language",
+    "ka": "ქართული",
+    "en": "English"
+  },
+  "Nav": {
+    "favorites": "Favorites",
+    "login": "Sign in"
+  },
+  "Search": {
+    "trigger": "Search by name…",
+    "triggerAria": "Search by name",
+    "dialogTitle": "Search by name",
+    "dialogDescription": "Search for a restaurant, café or fast-food spot by name",
+    "inputPlaceholder": "Search for a place by name…",
+    "loading": "Searching…",
+    "minChars": "Type at least {count} characters…",
+    "empty": "Nothing found.",
+    "group": "Places"
+  },
+  "Categories": {
+    "restaurant": "Restaurant",
+    "cafe": "Café",
+    "fastFood": "Fast food"
+  },
+  "Filters": {
+    "clear": "Clear filters"
+  },
+  "Districts": {
+    "title": "District",
+    "clearAria": "Clear filter",
+    "none": "No district selected",
+    "mapAlt": "Schematic map of Tbilisi districts"
+  },
+  "Login": {
+    "pageTitle": "Sign in",
+    "heading": "Sign in to your account",
+    "subtitle": "Sign in with Google or get a sign-in link by email.",
+    "google": "Sign in with Google",
+    "or": "or",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "submitMagic": "Get a link by email",
+    "sentTitle": "Sign-in link sent",
+    "sentDescription": "Check {email} — we sent you a link to sign in.",
+    "errorEmailRequired": "Enter your email",
+    "errorEmailInvalid": "Invalid email format",
+    "errorMagicFailed": "Couldn't send the link. Please try again.",
+    "errorEmailUnavailable": "Email sign-in is currently unavailable. Please use Google.",
+    "dialogTitle": "Sign in",
+    "dialogDescription": "Sign in to leave a comment and rate this place."
+  },
+  "Favorites": {
+    "pageTitle": "Favorites",
+    "heading": "Favorites",
+    "empty": "You don't have any favorite places yet.",
+    "backToMap": "Back to the map",
+    "allRemoved": "All favorites removed.",
+    "addAria": "Add to favorites",
+    "removeAria": "Remove from favorites",
+    "toggleError": "Something went wrong. Please try again.",
+    "fallbackName": "Place"
+  },
+  "Place": {
+    "fallbackName": "Place",
+    "openNow": "Open now",
+    "closed": "Closed",
+    "priceFree": "Free",
+    "prevPhoto": "Previous photo",
+    "nextPhoto": "Next photo",
+    "photoAlt": "{prefix} — photo {index}",
+    "photoIndicator": "Photo {index}"
+  },
+  "Map": {
+    "loading": "Map is loading"
+  }
+}

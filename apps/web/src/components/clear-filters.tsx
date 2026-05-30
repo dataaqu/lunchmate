@@ -1,7 +1,8 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +12,9 @@ import { Button } from "@/components/ui/button";
  */
 export function ClearFilters() {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
+  const t = useTranslations("Filters");
 
   const hasFilters =
     searchParams.has("category") || searchParams.has("district");
@@ -23,10 +26,10 @@ export function ClearFilters() {
       variant="secondary"
       size="sm"
       className="shadow-md"
-      onClick={() => router.replace("/", { scroll: false })}
+      onClick={() => router.replace(pathname, { scroll: false })}
     >
       <X className="size-4" aria-hidden="true" />
-      ფილტრის გასუფთავება
+      {t("clear")}
     </Button>
   );
 }

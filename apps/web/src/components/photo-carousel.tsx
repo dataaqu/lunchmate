@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface Props {
   photos: string[];
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function PhotoCarousel({ photos, altPrefix }: Props) {
+  const t = useTranslations("Place");
   const [current, setCurrent] = useState(0);
 
   if (photos.length === 0) {
@@ -29,7 +31,7 @@ export function PhotoCarousel({ photos, altPrefix }: Props) {
         <img
           key={uri}
           src={uri}
-          alt={`${altPrefix} — ფოტო ${i + 1}`}
+          alt={t("photoAlt", { prefix: altPrefix, index: i + 1 })}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
             i === current ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
@@ -40,14 +42,14 @@ export function PhotoCarousel({ photos, altPrefix }: Props) {
         <>
           <button
             onClick={prev}
-            aria-label="წინა ფოტო"
+            aria-label={t("prevPhoto")}
             className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white hover:bg-black/60 transition-colors"
           >
             <ChevronLeft className="size-5" />
           </button>
           <button
             onClick={next}
-            aria-label="შემდეგი ფოტო"
+            aria-label={t("nextPhoto")}
             className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white hover:bg-black/60 transition-colors"
           >
             <ChevronRight className="size-5" />
@@ -58,7 +60,7 @@ export function PhotoCarousel({ photos, altPrefix }: Props) {
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                aria-label={`ფოტო ${i + 1}`}
+                aria-label={t("photoIndicator", { index: i + 1 })}
                 className={`h-1.5 rounded-full transition-all ${
                   i === current ? "w-4 bg-white" : "w-1.5 bg-white/50 hover:bg-white/75"
                 }`}

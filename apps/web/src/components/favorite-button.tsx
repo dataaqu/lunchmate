@@ -3,10 +3,11 @@
 import * as React from "react";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { LoginDialog } from "@/components/login-dialog";
-import { toggleFavorite } from "@/app/favorites/actions";
+import { toggleFavorite } from "@/app/[locale]/favorites/actions";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -33,6 +34,7 @@ export function FavoriteButton({
   className,
   onToggle,
 }: Props) {
+  const t = useTranslations("Favorites");
   const [favorited, setFavorited] = React.useState(initialFavorited);
   const [loginOpen, setLoginOpen] = React.useState(false);
   const [pending, startTransition] = React.useTransition();
@@ -53,7 +55,7 @@ export function FavoriteButton({
         if (result.error === "unauthenticated") {
           setLoginOpen(true);
         } else {
-          toast.error("ვერ შესრულდა. სცადეთ თავიდან.");
+          toast.error(t("toggleError"));
         }
         return;
       }
@@ -68,9 +70,7 @@ export function FavoriteButton({
         variant="ghost"
         size="icon"
         aria-pressed={favorited}
-        aria-label={
-          favorited ? "რჩეულებიდან ამოშლა" : "რჩეულებში დამატება"
-        }
+        aria-label={favorited ? t("removeAria") : t("addAria")}
         disabled={pending}
         onClick={handleToggle}
         className={className}

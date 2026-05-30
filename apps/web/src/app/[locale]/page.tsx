@@ -1,15 +1,20 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { Heart, MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 
+import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { CategoryFilter } from "@/components/category-filter";
 import { ClearFilters } from "@/components/clear-filters";
 import { GoogleMapComponent } from "@/components/map-loader";
 import { DistrictPanel } from "@/components/district-panel";
 import { SearchCommand } from "@/components/search-command";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export default function Home() {
+  const t = useTranslations("Nav");
+  const tc = useTranslations("Common");
+
   return (
     <div className="flex flex-col h-screen">
       <header className="border-b shrink-0">
@@ -17,18 +22,19 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <MapPin className="size-5" />
             <span className="font-semibold tracking-tight">
-              თბილისის კვების გიდი
+              {tc("appName")}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <SearchCommand />
+            <LanguageSwitcher />
             <Button variant="ghost" size="icon" asChild>
-              <Link href="/favorites" aria-label="რჩეულები">
+              <Link href="/favorites" aria-label={t("favorites")}>
                 <Heart className="size-5" />
               </Link>
             </Button>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/login">შესვლა</Link>
+              <Link href="/login">{t("login")}</Link>
             </Button>
           </div>
         </div>

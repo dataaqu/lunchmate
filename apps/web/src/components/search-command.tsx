@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
 import { MapPin, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 
+import { useRouter } from "@/i18n/navigation";
 import {
   CommandDialog,
   CommandEmpty,
@@ -31,6 +32,7 @@ const MIN_QUERY_LENGTH = 2;
  */
 export function SearchCommand() {
   const router = useRouter();
+  const t = useTranslations("Search");
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
@@ -117,11 +119,11 @@ export function SearchCommand() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="ძებნა სახელით"
+        aria-label={t("triggerAria")}
         className="inline-flex h-9 items-center gap-2 rounded-md border border-input bg-transparent px-3 text-sm text-muted-foreground shadow-xs outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
       >
         <Search className="size-4" />
-        <span className="hidden sm:inline">ძებნა სახელით…</span>
+        <span className="hidden sm:inline">{t("trigger")}</span>
         <kbd className="pointer-events-none ml-1 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground sm:inline-flex">
           ⌘K
         </kbd>
@@ -130,36 +132,36 @@ export function SearchCommand() {
       <CommandDialog
         open={open}
         onOpenChange={handleOpenChange}
-        title="ძებნა სახელით"
-        description="მოძებნე რესტორანი, კაფე ან სწრაფი კვების ობიექტი სახელით"
+        title={t("dialogTitle")}
+        description={t("dialogDescription")}
         commandProps={{ shouldFilter: false }}
       >
         <CommandInput
-          placeholder="მოძებნე ობიექტი სახელით…"
+          placeholder={t("inputPlaceholder")}
           value={query}
           onValueChange={handleQueryChange}
         />
         <CommandList>
           {loading && (
             <div className="py-6 text-center text-sm text-muted-foreground">
-              იძებნება…
+              {t("loading")}
             </div>
           )}
 
           {!loading && trimmed.length < MIN_QUERY_LENGTH && (
             <div className="py-6 text-center text-sm text-muted-foreground">
-              აკრიფე მინიმუმ {MIN_QUERY_LENGTH} სიმბოლო…
+              {t("minChars", { count: MIN_QUERY_LENGTH })}
             </div>
           )}
 
           {!loading &&
             trimmed.length >= MIN_QUERY_LENGTH &&
             suggestions.length === 0 && (
-              <CommandEmpty>ვერაფერი მოიძებნა.</CommandEmpty>
+              <CommandEmpty>{t("empty")}</CommandEmpty>
             )}
 
           {suggestions.length > 0 && (
-            <CommandGroup heading="ობიექტები">
+            <CommandGroup heading={t("group")}>
               {suggestions.map((s) => (
                 <CommandItem
                   key={s.placeId}

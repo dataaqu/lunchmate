@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { ImageOff, Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 
+import { Link } from "@/i18n/navigation";
 import { FavoriteButton } from "@/components/favorite-button";
 
 export interface FavoritePlace {
@@ -20,6 +21,7 @@ export interface FavoritePlace {
  * Un-favoriting removes the card from the list optimistically.
  */
 export function FavoritesList({ places }: { places: FavoritePlace[] }) {
+  const t = useTranslations("Favorites");
   const [items, setItems] = React.useState(places);
 
   function handleToggle(id: string, favorited: boolean) {
@@ -31,7 +33,7 @@ export function FavoritesList({ places }: { places: FavoritePlace[] }) {
   if (items.length === 0) {
     return (
       <p className="py-16 text-center text-muted-foreground">
-        ყველა რჩეული წაიშალა.
+        {t("allRemoved")}
       </p>
     );
   }
