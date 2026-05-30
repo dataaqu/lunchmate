@@ -384,7 +384,7 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - JSON-LD `Restaurant` schema
 
 #### T4.6: Performance + monitoring
-- [ ] **Status**: TODO
+- [x] **Status**: DONE
 - **Complexity**: Medium
 - **Dependencies**: T1.7
 - **Description**:
@@ -392,6 +392,11 @@ Auth.js, Drizzle schema, Hono API, კომენტარების სი�
   - Sentry error tracking ორივე app-ში
   - Google Cloud quota monitoring alert
   - Core Web Vitals ≥ "Good"
+- **Notes**: Analytics + Speed Insights wired in the locale layout; Sentry in
+  both apps (no-op until a DSN is set), source-map upload gated on
+  `SENTRY_AUTH_TOKEN`. Quota alert runbook + script in `infra/quota-alert/`
+  (operator-provisioned). Monitoring overview: `docs/monitoring.md`. Core Web
+  Vitals ≥ "Good" is validated post-deploy via the Vercel Speed Insights dashboard.
 
 ---
 

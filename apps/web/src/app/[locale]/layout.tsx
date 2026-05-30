@@ -5,6 +5,9 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import "../globals.css";
 
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
 import { localeAlternates } from "@/lib/seo";
@@ -84,6 +87,9 @@ export default async function LocaleLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
         <Toaster />
+        {/* Vercel Web Analytics + Core Web Vitals (Speed Insights) — T4.6. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,0 +1,47 @@
+{
+  "displayName": "lunchmate — Maps/Places quota usage warning",
+  "documentation": {
+    "content": "Maps/Places API request volume is approaching the daily budget. This is an EARLY warning that fires well before the $200 hard billing cap (infra/billing-cap) detaches billing. Investigate traffic / caching before spend escalates.\n\nDashboards:\n- Quotas:      https://console.cloud.google.com/iam-admin/quotas?project=lunchmate-496819\n- Maps/Places: https://console.cloud.google.com/google/maps-apis/metrics?project=lunchmate-496819",
+    "mimeType": "text/markdown"
+  },
+  "combiner": "OR",
+  "conditions": [
+    {
+      "displayName": "Places + Maps request_count > 40k/day",
+      "conditionThreshold": {
+        "filter": "metric.type=\"serviceruntime.googleapis.com/api/request_count\" AND (resource.labels.service=\"places.googleapis.com\" OR resource.labels.service=\"maps-backend.googleapis.com\")",
+        "aggregations": [
+          {
+            "alignmentPeriod": "86400s",
+            "perSeriesAligner": "ALIGN_SUM",
+            "crossSeriesReducer": "REDUCE_SUM"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 40000,
+        "duration": "0s",
+        "trigger": { "count": 1 }
+      }
+    },
+    {
+      "displayName": "Any quota-exceeded errors",
+      "conditionThreshold": {
+        "filter": "metric.type=\"serviceruntime.googleapis.com/quota/exceeded\" AND (resource.labels.service=\"places.googleapis.com\" OR resource.labels.service=\"maps-backend.googleapis.com\")",
+        "aggregations": [
+          {
+            "alignmentPeriod": "300s",
+            "perSeriesAligner": "ALIGN_SUM",
+            "crossSeriesReducer": "REDUCE_SUM"
+          }
+        ],
+        "comparison": "COMPARISON_GT",
+        "thresholdValue": 0,
+        "duration": "0s",
+        "trigger": { "count": 1 }
+      }
+    }
+  ],
+  "alertStrategy": {
+    "autoClose": "604800s"
+  }
+}
